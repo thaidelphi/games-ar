@@ -134,6 +134,14 @@ function speakWord(word, lang = 'en-US') {
         currentUtterance = new SpeechSynthesisUtterance(word);
         currentUtterance.lang = lang;
         currentUtterance.rate = 0.9;
+        
+        // บังคับเลือกเสียงที่ตรงกับภาษา เพื่อแก้ปัญหาไม่อ่านภาษาไทย
+        let voices = window.speechSynthesis.getVoices();
+        let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
+        if (voice) {
+            currentUtterance.voice = voice;
+        }
+        
         window.speechSynthesis.speak(currentUtterance);
     }
 }
