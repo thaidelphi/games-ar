@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR Finger Counter</title>
+    
+    <!-- MediaPipe Libraries for Hand Tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="finger.css">
+</head>
+<body>
+    <div class="container">
+        <button id="fullscreen-btn" class="fs-btn" title="Toggle Fullscreen">🔲</button>
+        <button onclick="location.reload()" class="refresh-btn" title="Refresh Page">🔄</button>
+        <h1>ระบบนับนิ้วมือ (Finger Counter AI)</h1>
+        <p>ชูนิ้วขึ้นมาหน้ากล้องเพื่อดูจำนวนตัวเลข</p>
+        <div id="hand-side-display" style="font-size: 20px; color: #2ecc71; margin-bottom: 10px; font-weight: bold;">ด้านมือ: กำลังค้นหา...</div>
+        
+        <div class="video-container">
+            <!-- ซ่อนวีดีโอจริงไว้ เราจะแสดงผลทุกอย่างผ่าน Canvas เพื่อให้วาดรูปทับได้ -->
+            <video class="input_video" playsinline></video>
+            <!-- Canvas สำหรับวาดเส้นโครงมือและตัวเลข -->
+            <canvas class="output_canvas" width="640" height="480"></canvas>
+        </div>
+        
+        <div id="loading">กำลังโหลดโมเดล AI... กรุณารอสักครู่และอนุญาตการใช้งานกล้อง</div>
+    </div>
+
+    <!-- โค้ดสำหรับประมวลผลกล้องและนับนิ้ว -->
+    <script src="finger-logic.js"></script>
+    <script>
+        const fsBtn = document.getElementById('fullscreen-btn');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.log(err));
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

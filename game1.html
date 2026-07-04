@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Catching Game</title>
+    
+    <!-- MediaPipe Face Mesh -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="game1.css">
+</head>
+<body>
+    <div class="game-container">
+        <button id="fullscreen-btn" class="fs-btn" title="Toggle Fullscreen">🔲</button>
+        <button onclick="location.reload()" class="refresh-btn" title="Refresh Page">🔄</button>
+        <!-- UI Overlay: แยกออกมาจาก Canvas เพื่อให้ตัวหนังสือไม่กลับด้านตอนเป็นกระจกเงา -->
+        <div id="ui-layer">
+            <div id="score-display">คะแนน: <span id="score">0</span></div>
+            <div id="instructions">ขยับหน้าซ้ายขวา และ 👄 อ้าปากเพื่อกินอาหาร!</div>
+        </div>
+
+        <div class="video-wrapper">
+            <video class="input_video" playsinline></video>
+            <canvas class="output_canvas" width="640" height="480"></canvas>
+        </div>
+        
+        <div id="loading">กำลังโหลดโมเดล AI กรุณารอสักครู่และกดอนุญาตกล้อง...</div>
+    </div>
+
+    <script src="game1-logic.js"></script>
+    <script>
+        const fsBtn = document.getElementById('fullscreen-btn');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.log(err));
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
