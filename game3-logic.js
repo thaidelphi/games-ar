@@ -105,6 +105,8 @@ function startCountdown() {
             clearInterval(countdownInterval);
             questionStartTime = Date.now();
             gameState = 'PLAYING';
+            // ให้เสียงอ่านทำงานพร้อมกับตอนที่ภาพโจทย์ปรากฏขึ้น
+            speakWord(currentWord);
         }
     }, 1000);
 }
@@ -131,9 +133,6 @@ function generateQuestion() {
     let correctAnimal = available[Math.floor(Math.random() * available.length)];
     currentWord = correctAnimal.word;
     lastCorrectWord = currentWord;
-    
-    // อ่านออกเสียงคำศัพท์
-    speakWord(currentWord);
     
     // เอาข้อที่ถูกออกไปก่อน เพื่อสุ่มตัวหลอกมาเพิ่ม
     dataPool = dataPool.filter(a => a.word !== currentWord);
