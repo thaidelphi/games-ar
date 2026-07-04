@@ -127,18 +127,7 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
-const clapAudio = new Audio('https://www.myinstants.com/media/sounds/applause.mp3');
-const booAudio = new Audio('https://www.myinstants.com/media/sounds/boo.mp3');
-
-function playClapSound() {
-    clapAudio.currentTime = 0;
-    clapAudio.play().catch(e => console.log(e));
-}
-
-function playBooSound() {
-    booAudio.currentTime = 0;
-    booAudio.play().catch(e => console.log(e));
-}
+// Removed duplicate clap/boo variables
 
 const startOverlay = document.getElementById('start-overlay');
 if (startOverlay) {
