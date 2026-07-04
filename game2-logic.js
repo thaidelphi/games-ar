@@ -142,6 +142,13 @@ function celebrate() {
 }
 
 function onResults(results) {
+
+    if (videoElement.videoWidth && videoElement.videoHeight) {
+        if (canvasElement.width !== videoElement.videoWidth || canvasElement.height !== videoElement.videoHeight) {
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+        }
+    }
     if (loadingElement.style.display !== 'none') {
         loadingElement.style.display = 'none';
         generateQuestion(); // เริ่มเกมทันทีที่โหลดโมเดลเสร็จ

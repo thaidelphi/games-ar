@@ -33,6 +33,13 @@ setInterval(spawnFood, 1200);
 let currentMouth = { x: 0, y: 0, isOpen: false };
 
 function onResults(results) {
+
+    if (videoElement.videoWidth && videoElement.videoHeight) {
+        if (canvasElement.width !== videoElement.videoWidth || canvasElement.height !== videoElement.videoHeight) {
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+        }
+    }
     // ปิดหน้าจอโหลดเมื่อ AI ทำงานสำเร็จ
     if (loadingElement.style.display !== 'none') {
         loadingElement.style.display = 'none';
