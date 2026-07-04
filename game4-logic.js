@@ -8,25 +8,25 @@ const gameContainer = document.getElementById('game-container');
 
 // ข้อมูลคำศัพท์ผลไม้และ Emoji
 const FRUIT_DATA = [
-    { word: 'APPLE', emoji: '🍎' },
-    { word: 'BANANA', emoji: '🍌' },
-    { word: 'ORANGE', emoji: '🍊' },
-    { word: 'GRAPE', emoji: '🍇' },
-    { word: 'STRAWBERRY', emoji: '🍓' },
-    { word: 'WATERMELON', emoji: '🍉' },
-    { word: 'PINEAPPLE', emoji: '🍍' },
-    { word: 'MANGO', emoji: '🥭' },
-    { word: 'LEMON', emoji: '🍋' },
-    { word: 'PEACH', emoji: '🍑' },
-    { word: 'CHERRY', emoji: '🍒' },
-    { word: 'PEAR', emoji: '🍐' },
-    { word: 'KIWI', emoji: '🥝' },
-    { word: 'COCONUT', emoji: '🥥' },
-    { word: 'AVOCADO', emoji: '🥑' },
-    { word: 'MELON', emoji: '🍈' },
-    { word: 'BLUEBERRY', emoji: '🫐' },
-    { word: 'TOMATO', emoji: '🍅' },
-    { word: 'CORN', emoji: '🌽' }
+    { word: 'APPLE', emoji: '🍎', thai: 'แอปเปิ้ล' },
+    { word: 'BANANA', emoji: '🍌', thai: 'กล้วย' },
+    { word: 'ORANGE', emoji: '🍊', thai: 'ส้ม' },
+    { word: 'GRAPE', emoji: '🍇', thai: 'องุ่น' },
+    { word: 'STRAWBERRY', emoji: '🍓', thai: 'สตรอว์เบอร์รี' },
+    { word: 'WATERMELON', emoji: '🍉', thai: 'แตงโม' },
+    { word: 'PINEAPPLE', emoji: '🍍', thai: 'สับปะรด' },
+    { word: 'MANGO', emoji: '🥭', thai: 'มะม่วง' },
+    { word: 'LEMON', emoji: '🍋', thai: 'เลมอน' },
+    { word: 'PEACH', emoji: '🍑', thai: 'ลูกพีช' },
+    { word: 'CHERRY', emoji: '🍒', thai: 'เชอร์รี่' },
+    { word: 'PEAR', emoji: '🍐', thai: 'ลูกแพร์' },
+    { word: 'KIWI', emoji: '🥝', thai: 'กีวี่' },
+    { word: 'COCONUT', emoji: '🥥', thai: 'มะพร้าว' },
+    { word: 'AVOCADO', emoji: '🥑', thai: 'อะโวคาโด' },
+    { word: 'MELON', emoji: '🍈', thai: 'เมล่อน' },
+    { word: 'BLUEBERRY', emoji: '🫐', thai: 'บลูเบอร์รี' },
+    { word: 'TOMATO', emoji: '🍅', thai: 'มะเขือเทศ' },
+    { word: 'CORN', emoji: '🌽', thai: 'ข้าวโพด' }
 ];
 
 let score = 0;
@@ -79,11 +79,11 @@ function startCountdown() {
 let lastCorrectWord = "";
 
 let currentUtterance = null;
-function speakWord(word) {
+function speakWord(word, lang = 'en-US') {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         currentUtterance = new SpeechSynthesisUtterance(word);
-        currentUtterance.lang = 'en-US';
+        currentUtterance.lang = lang;
         currentUtterance.rate = 0.9;
         window.speechSynthesis.speak(currentUtterance);
     }
@@ -143,6 +143,14 @@ function punish() {
     
     let correctAns = answers.find(a => a.isCorrect);
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentWord} = ${correctAns.emoji}`;
+    
+    // เสียงคำแปลไทย
+    let correctData = FRUIT_DATA.find(a => a.word === currentWord);
+    if (correctData && correctData.thai) {
+        setTimeout(() => {
+            speakWord(correctData.thai, 'th-TH');
+        }, 800); 
+    }
     
     gameContainer.classList.add('shake-effect');
     gameContainer.classList.add('punish-active');

@@ -8,74 +8,74 @@ const gameContainer = document.getElementById('game-container');
 
 // ข้อมูลคำศัพท์สัตว์และ Emoji
 const ANIMAL_DATA = [
-    { word: 'DOG', emoji: '🐶' },
-    { word: 'CAT', emoji: '🐱' },
-    { word: 'MOUSE', emoji: '🐭' },
-    { word: 'RABBIT', emoji: '🐰' },
-    { word: 'FOX', emoji: '🦊' },
-    { word: 'BEAR', emoji: '🐻' },
-    { word: 'PANDA', emoji: '🐼' },
-    { word: 'KOALA', emoji: '🐨' },
-    { word: 'TIGER', emoji: '🐯' },
-    { word: 'LION', emoji: '🦁' },
-    { word: 'COW', emoji: '🐮' },
-    { word: 'PIG', emoji: '🐷' },
-    { word: 'FROG', emoji: '🐸' },
-    { word: 'MONKEY', emoji: '🐵' },
-    { word: 'CHICKEN', emoji: '🐔' },
-    { word: 'PENGUIN', emoji: '🐧' },
-    { word: 'BIRD', emoji: '🐦' },
-    { word: 'DUCK', emoji: '🦆' },
-    { word: 'OWL', emoji: '🦉' },
-    { word: 'HORSE', emoji: '🐴' },
-    { word: 'ELEPHANT', emoji: '🐘' },
-    { word: 'GIRAFFE', emoji: '🦒' },
-    { word: 'HIPPO', emoji: '🦛' },
-    { word: 'RHINO', emoji: '🦏' },
-    { word: 'ZEBRA', emoji: '🦓' },
-    { word: 'CAMEL', emoji: '🐫' },
-    { word: 'KANGAROO', emoji: '🦘' },
-    { word: 'WOLF', emoji: '🐺' },
-    { word: 'BAT', emoji: '🦇' },
-    { word: 'GORILLA', emoji: '🦍' },
-    { word: 'ORANGUTAN', emoji: '🦧' },
-    { word: 'SLOTH', emoji: '🦥' },
-    { word: 'OTTER', emoji: '🦦' },
-    { word: 'RACCOON', emoji: '🦝' },
-    { word: 'SKUNK', emoji: '🦨' },
-    { word: 'BADGER', emoji: '🦡' },
-    { word: 'HAMSTER', emoji: '🐹' },
-    { word: 'SHEEP', emoji: '🐑' },
-    { word: 'GOAT', emoji: '🐐' },
-    { word: 'DEER', emoji: '🦌' },
-    { word: 'LLAMA', emoji: '🦙' },
-    { word: 'BOAR', emoji: '🐗' },
-    { word: 'SNAKE', emoji: '🐍' },
-    { word: 'TURTLE', emoji: '🐢' },
-    { word: 'CROCODILE', emoji: '🐊' },
-    { word: 'FISH', emoji: '🐟' },
-    { word: 'SHARK', emoji: '🦈' },
-    { word: 'WHALE', emoji: '🐳' },
-    { word: 'DOLPHIN', emoji: '🐬' },
-    { word: 'OCTOPUS', emoji: '🐙' },
-    { word: 'SQUID', emoji: '🦑' },
-    { word: 'CRAB', emoji: '🦀' },
-    { word: 'LOBSTER', emoji: '🦞' },
-    { word: 'BUTTERFLY', emoji: '🦋' },
-    { word: 'BEE', emoji: '🐝' },
-    { word: 'ANT', emoji: '🐜' },
-    { word: 'SPIDER', emoji: '🕷️' },
-    { word: 'SCORPION', emoji: '🦂' },
-    { word: 'SNAIL', emoji: '🐌' },
-    { word: 'BUG', emoji: '🐛' },
-    { word: 'ROOSTER', emoji: '🐓' },
-    { word: 'TURKEY', emoji: '🦃' },
-    { word: 'PEACOCK', emoji: '🦚' },
-    { word: 'PARROT', emoji: '🦜' },
-    { word: 'SWAN', emoji: '🦢' },
-    { word: 'FLAMINGO', emoji: '🦩' },
-    { word: 'DOVE', emoji: '🕊️' },
-    { word: 'EAGLE', emoji: '🦅' }
+    { word: 'DOG', emoji: '🐶', thai: 'สุนัข' },
+    { word: 'CAT', emoji: '🐱', thai: 'แมว' },
+    { word: 'MOUSE', emoji: '🐭', thai: 'หนู' },
+    { word: 'RABBIT', emoji: '🐰', thai: 'กระต่าย' },
+    { word: 'FOX', emoji: '🦊', thai: 'หมาจิ้งจอก' },
+    { word: 'BEAR', emoji: '🐻', thai: 'หมี' },
+    { word: 'PANDA', emoji: '🐼', thai: 'แพนด้า' },
+    { word: 'KOALA', emoji: '🐨', thai: 'โคอาล่า' },
+    { word: 'TIGER', emoji: '🐯', thai: 'เสือ' },
+    { word: 'LION', emoji: '🦁', thai: 'สิงโต' },
+    { word: 'COW', emoji: '🐮', thai: 'วัว' },
+    { word: 'PIG', emoji: '🐷', thai: 'หมู' },
+    { word: 'FROG', emoji: '🐸', thai: 'กบ' },
+    { word: 'MONKEY', emoji: '🐵', thai: 'ลิง' },
+    { word: 'CHICKEN', emoji: '🐔', thai: 'ไก่' },
+    { word: 'PENGUIN', emoji: '🐧', thai: 'เพนกวิน' },
+    { word: 'BIRD', emoji: '🐦', thai: 'นก' },
+    { word: 'DUCK', emoji: '🦆', thai: 'เป็ด' },
+    { word: 'OWL', emoji: '🦉', thai: 'นกฮูก' },
+    { word: 'HORSE', emoji: '🐴', thai: 'ม้า' },
+    { word: 'ELEPHANT', emoji: '🐘', thai: 'ช้าง' },
+    { word: 'GIRAFFE', emoji: '🦒', thai: 'ยีราฟ' },
+    { word: 'HIPPO', emoji: '🦛', thai: 'ฮิปโป' },
+    { word: 'RHINO', emoji: '🦏', thai: 'แรด' },
+    { word: 'ZEBRA', emoji: '🦓', thai: 'ม้าลาย' },
+    { word: 'CAMEL', emoji: '🐫', thai: 'อูฐ' },
+    { word: 'KANGAROO', emoji: '🦘', thai: 'จิงโจ้' },
+    { word: 'WOLF', emoji: '🐺', thai: 'หมาป่า' },
+    { word: 'BAT', emoji: '🦇', thai: 'ค้างคาว' },
+    { word: 'GORILLA', emoji: '🦍', thai: 'กอริลลา' },
+    { word: 'ORANGUTAN', emoji: '🦧', thai: 'อุรังอุตัง' },
+    { word: 'SLOTH', emoji: '🦥', thai: 'สล็อธ' },
+    { word: 'OTTER', emoji: '🦦', thai: 'นาก' },
+    { word: 'RACCOON', emoji: '🦝', thai: 'แรคคูน' },
+    { word: 'SKUNK', emoji: '🦨', thai: 'สกั๊งค์' },
+    { word: 'BADGER', emoji: '🦡', thai: 'แบดเจอร์' },
+    { word: 'HAMSTER', emoji: '🐹', thai: 'หนูแฮมสเตอร์' },
+    { word: 'SHEEP', emoji: '🐑', thai: 'แกะ' },
+    { word: 'GOAT', emoji: '🐐', thai: 'แพะ' },
+    { word: 'DEER', emoji: '🦌', thai: 'กวาง' },
+    { word: 'LLAMA', emoji: '🦙', thai: 'ลามะ' },
+    { word: 'BOAR', emoji: '🐗', thai: 'หมูป่า' },
+    { word: 'SNAKE', emoji: '🐍', thai: 'งู' },
+    { word: 'TURTLE', emoji: '🐢', thai: 'เต่า' },
+    { word: 'CROCODILE', emoji: '🐊', thai: 'จระเข้' },
+    { word: 'FISH', emoji: '🐟', thai: 'ปลา' },
+    { word: 'SHARK', emoji: '🦈', thai: 'ฉลาม' },
+    { word: 'WHALE', emoji: '🐳', thai: 'วาฬ' },
+    { word: 'DOLPHIN', emoji: '🐬', thai: 'โลมา' },
+    { word: 'OCTOPUS', emoji: '🐙', thai: 'หมึกยักษ์' },
+    { word: 'SQUID', emoji: '🦑', thai: 'ปลาหมึก' },
+    { word: 'CRAB', emoji: '🦀', thai: 'ปู' },
+    { word: 'LOBSTER', emoji: '🦞', thai: 'กุ้งมังกร' },
+    { word: 'BUTTERFLY', emoji: '🦋', thai: 'ผีเสื้อ' },
+    { word: 'BEE', emoji: '🐝', thai: 'ผึ้ง' },
+    { word: 'ANT', emoji: '🐜', thai: 'มด' },
+    { word: 'SPIDER', emoji: '🕷️', thai: 'แมงมุม' },
+    { word: 'SCORPION', emoji: '🦂', thai: 'แมงป่อง' },
+    { word: 'SNAIL', emoji: '🐌', thai: 'หอยทาก' },
+    { word: 'BUG', emoji: '🐛', thai: 'แมลง' },
+    { word: 'ROOSTER', emoji: '🐓', thai: 'ไก่โต้ง' },
+    { word: 'TURKEY', emoji: '🦃', thai: 'ไก่งวง' },
+    { word: 'PEACOCK', emoji: '🦚', thai: 'นกยูง' },
+    { word: 'PARROT', emoji: '🦜', thai: 'นกแก้ว' },
+    { word: 'SWAN', emoji: '🦢', thai: 'หงส์' },
+    { word: 'FLAMINGO', emoji: '🦩', thai: 'ฟลามิงโก' },
+    { word: 'DOVE', emoji: '🕊️', thai: 'นกพิราบ' },
+    { word: 'EAGLE', emoji: '🦅', thai: 'นกอินทรี' }
 ];
 
 let score = 0;
@@ -128,11 +128,11 @@ function startCountdown() {
 let lastCorrectWord = "";
 
 let currentUtterance = null;
-function speakWord(word) {
+function speakWord(word, lang = 'en-US') {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         currentUtterance = new SpeechSynthesisUtterance(word);
-        currentUtterance.lang = 'en-US';
+        currentUtterance.lang = lang;
         currentUtterance.rate = 0.9;
         window.speechSynthesis.speak(currentUtterance);
     }
@@ -192,6 +192,14 @@ function punish() {
     
     let correctAns = answers.find(a => a.isCorrect);
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentWord} = ${correctAns.emoji}`;
+    
+    // เสียงคำแปลไทย
+    let correctData = ANIMAL_DATA.find(a => a.word === currentWord);
+    if (correctData && correctData.thai) {
+        setTimeout(() => {
+            speakWord(correctData.thai, 'th-TH');
+        }, 800); 
+    }
     
     gameContainer.classList.add('shake-effect');
     gameContainer.classList.add('punish-active');
