@@ -92,13 +92,6 @@ if (startOverlay) {
     });
 }
 
-const testAudioBtn = document.getElementById('test-audio-btn');
-if (testAudioBtn) {
-    testAudioBtn.addEventListener('click', () => {
-        speakWord('ทดสอบระบบเสียงภาษาไทย', 'th-TH');
-    });
-}
-
 function speakWord(word, lang = 'en-US') {
     if (typeof responsiveVoice !== 'undefined') {
         let voiceName = lang === 'th-TH' ? 'Thai Female' : 'US English Female';
