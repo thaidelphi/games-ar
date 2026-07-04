@@ -479,7 +479,12 @@ canvasElement.addEventListener('click', (event) => {
     answers.forEach(ans => {
         if (clickX >= ans.x && clickX <= ans.x + ans.width &&
             clickY >= ans.y && clickY <= ans.y + ans.height) {
-            ans.hoverProgress = 1; // บังคับให้แถบโหลดเต็มทันที
+            
+            if (ans.isCorrect) {
+                celebrate();
+            } else {
+                punish();
+            }
         }
     });
 });
