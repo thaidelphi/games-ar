@@ -7,11 +7,18 @@ const wordPopup = document.getElementById('word-popup');
 // ข้อมูลอวัยวะที่สามารถชี้ได้
 // เราจะใช้ Pose Landmarks
 const BODY_PARTS = [
-    { id: 'nose', nameEn: 'Nose', nameTh: 'จมูก', landmarks: [0] },
-    { id: 'eye', nameEn: 'Eye', nameTh: 'ตา', landmarks: [2, 5] },
-    { id: 'ear', nameEn: 'Ear', nameTh: 'หู', landmarks: [7, 8] },
-    { id: 'mouth', nameEn: 'Mouth', nameTh: 'ปาก', landmarks: [9, 10] },
-    { id: 'shoulder', nameEn: 'Shoulder', nameTh: 'ไหล่', landmarks: [11, 12] }
+    { id: 'hair', nameEn: 'Hair', nameTh: 'ผม', source: 'face', landmarks: [10], offsetY: -0.15 },
+    { id: 'forehead', nameEn: 'Forehead', nameTh: 'หน้าผาก', source: 'face', landmarks: [10] },
+    { id: 'eyebrow', nameEn: 'Eyebrow', nameTh: 'คิ้ว', source: 'face', landmarks: [105, 334] },
+    { id: 'eye', nameEn: 'Eye', nameTh: 'ตา', source: 'pose', landmarks: [2, 5] },
+    { id: 'ear', nameEn: 'Ear', nameTh: 'หู', source: 'pose', landmarks: [7, 8] },
+    { id: 'nose', nameEn: 'Nose', nameTh: 'จมูก', source: 'pose', landmarks: [0] },
+    { id: 'cheek', nameEn: 'Cheek', nameTh: 'แก้ม', source: 'face', landmarks: [234, 454] },
+    { id: 'mouth', nameEn: 'Mouth', nameTh: 'ปาก', source: 'pose', landmarks: [9, 10] },
+    { id: 'chin', nameEn: 'Chin', nameTh: 'คาง', source: 'face', landmarks: [152] },
+    { id: 'neck', nameEn: 'Neck', nameTh: 'คอ', source: 'face', landmarks: [152], offsetY: 0.15 },
+    { id: 'shoulder', nameEn: 'Shoulder', nameTh: 'ไหล่', source: 'pose', landmarks: [11, 12] },
+    { id: 'arm', nameEn: 'Arm', nameTh: 'แขน', source: 'pose', landmarks: [13, 14, 15, 16] }
 ];
 
 let hoverState = { partId: null, progress: 0 };
@@ -104,13 +111,19 @@ function onResults(results) {
     let pointY = 0;
 
     // ตรวจสอบการชี้
-    if (fingerTips.length > 0 && results.poseLandmarks) {
+    if (fingerTips.length > 0) {
         for (let tip of fingerTips) {
             for (let part of BODY_PARTS) {
+                let landmarkSource = part.source === 'face' ? results.faceLandmarks : results.poseLandmarks;
+                if (!landmarkSource) continue;
+                
                 for (let idx of part.landmarks) {
-                    let targetLm = results.poseLandmarks[idx];
-                    if (targetLm) {
+                    let rawLm = landmarkSource[idx];
+                    if (rawLm) {
+                        // Apply offsetY if any
+                        let targetLm = { x: rawLm.x, y: rawLm.y + (part.offsetY || 0), z: rawLm.z };
                         let dist = getDistance(tip, targetLm);
+                        
                         if (dist < DISTANCE_THRESHOLD) {
                             detectedPart = part;
                             // คำนวณพิกัดบนหน้าจอเพื่อแสดง Popup
