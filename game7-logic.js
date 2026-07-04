@@ -37,6 +37,16 @@ if (startOverlay) {
             }
         } catch(e) { console.error(e); }
         startOverlay.style.display = 'none';
+        
+        // ซ่อนคำอธิบายหลังจาก 8 วินาที นับจากที่กดเริ่มเกม
+        setTimeout(() => {
+            const instructions = document.getElementById('instructions');
+            if (instructions) {
+                instructions.style.transition = "opacity 1s ease";
+                instructions.style.opacity = "0";
+                setTimeout(() => instructions.style.display = 'none', 1000);
+            }
+        }, 8000);
     });
 }
 
