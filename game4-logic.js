@@ -78,22 +78,25 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
-let currentAudio = null;
+let currentAudio = new Audio();
 function speakWord(word, lang = 'en-US') {
     let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
     let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${ttsLang}&q=${encodeURIComponent(word)}`;
     
-    if (currentAudio) {
-        currentAudio.pause();
-    }
+    currentAudio.pause();
+    currentAudio.src = url;
     
-    currentAudio = new Audio(url);
     currentAudio.play().catch(e => {
-        console.log("Google TTS failed, fallback to speechSynthesis");
+        console.log("Google TTS failed, fallback to speechSynthesis", e);
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(word);
             utterance.lang = lang;
+            let voices = window.speechSynthesis.getVoices();
+            let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
+            if (voice) {
+                utterance.voice = voice;
+            }
             window.speechSynthesis.speak(utterance);
         }
     });
