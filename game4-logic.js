@@ -80,6 +80,19 @@ let lastCorrectWord = "";
 
 let currentAudio = new Audio();
 
+document.addEventListener('DOMContentLoaded', () => {
+    const startOverlay = document.getElementById('start-overlay');
+    if (startOverlay) {
+        startOverlay.addEventListener('click', () => {
+            // Unlock audio by playing and immediately pausing
+            currentAudio.play().catch(() => {});
+            currentAudio.pause();
+            currentAudio.src = '';
+            startOverlay.style.display = 'none';
+        });
+    }
+});
+
 function speakWord(word, lang = 'en-US') {
     let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
     let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${ttsLang}&q=${encodeURIComponent(word)}`;
