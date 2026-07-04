@@ -78,23 +78,25 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
-let currentUtterance = null;
+let currentAudio = null;
 function speakWord(word, lang = 'en-US') {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        currentUtterance = new SpeechSynthesisUtterance(word);
-        currentUtterance.lang = lang;
-        currentUtterance.rate = 0.9;
-        
-        // บังคับเลือกเสียงที่ตรงกับภาษา เพื่อแก้ปัญหาไม่อ่านภาษาไทย
-        let voices = window.speechSynthesis.getVoices();
-        let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
-        if (voice) {
-            currentUtterance.voice = voice;
-        }
-        
-        window.speechSynthesis.speak(currentUtterance);
+    let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
+    let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${ttsLang}&client=tw-ob&q=${encodeURIComponent(word)}`;
+    
+    if (currentAudio) {
+        currentAudio.pause();
     }
+    
+    currentAudio = new Audio(url);
+    currentAudio.play().catch(e => {
+        console.log("Google TTS failed, fallback to speechSynthesis");
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            let utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = lang;
+            window.speechSynthesis.speak(utterance);
+        }
+    });
 }
 
 function generateQuestion() {
