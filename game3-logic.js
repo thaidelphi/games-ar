@@ -107,9 +107,17 @@ function startCountdown() {
             gameState = 'PLAYING';
         }
     }, 1000);
-}
-
 let lastCorrectWord = "";
+
+function speakWord(word) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        let utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+}
 
 function generateQuestion() {
     let dataPool = [...ANIMAL_DATA];
@@ -121,6 +129,9 @@ function generateQuestion() {
     let correctAnimal = available[Math.floor(Math.random() * available.length)];
     currentWord = correctAnimal.word;
     lastCorrectWord = currentWord;
+    
+    // อ่านออกเสียงคำศัพท์
+    speakWord(currentWord);
     
     // เอาข้อที่ถูกออกไปก่อน เพื่อสุ่มตัวหลอกมาเพิ่ม
     dataPool = dataPool.filter(a => a.word !== currentWord);
