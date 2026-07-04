@@ -38,13 +38,22 @@ function startCountdown() {
     }, 1000);
 }
 
+let lastCorrectAnswer = null;
+
 // ฟังก์ชันสร้างโจทย์ใหม่
 function generateQuestion() {
-    // สุ่มเลข 1 หลัก (1-9)
-    let num1 = Math.floor(Math.random() * 9) + 1;
-    let num2 = Math.floor(Math.random() * 9) + 1;
-    let correctAnswer = num1 + num2;
+    let num1, num2, correctAnswer;
     
+    // สุ่มเลข 1 หลัก (1-9) พยายามไม่ให้ซ้ำกับคำตอบข้อที่แล้ว
+    let attempts = 0;
+    do {
+        num1 = Math.floor(Math.random() * 9) + 1;
+        num2 = Math.floor(Math.random() * 9) + 1;
+        correctAnswer = num1 + num2;
+        attempts++;
+    } while (correctAnswer === lastCorrectAnswer && attempts < 10);
+    
+    lastCorrectAnswer = correctAnswer;
     currentQuestion = `${num1} + ${num2} = ?`;
 
     // สร้างคำตอบหลอก
@@ -53,8 +62,12 @@ function generateQuestion() {
     if (wrong2 < 0) wrong2 = correctAnswer + 15; // กันติดลบ
     
     let choices = [correctAnswer, wrong1, wrong2];
-    // สลับตำแหน่งคำตอบ (Shuffle)
-    choices.sort(() => Math.random() - 0.5);
+    
+    // สลับตำแหน่งคำตอบ (Fisher-Yates Shuffle)
+    for (let i = choices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
 
     // กำหนดตำแหน่งกล่อง 3 กล่องเรียงแนวนอน
     const startX = (canvasElement.width - (BOX_SIZE * 3 + 40)) / 2; // จัดให้อยู่ตรงกลาง

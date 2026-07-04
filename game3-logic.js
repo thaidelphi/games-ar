@@ -109,20 +109,34 @@ function startCountdown() {
     }, 1000);
 }
 
+let lastCorrectWord = "";
+
 function generateQuestion() {
     let dataPool = [...ANIMAL_DATA];
     
-    let selectedAnimals = [];
-    for(let i=0; i<3; i++) {
+    // กรองคำตอบเก่าออกเพื่อไม่ให้ซ้ำกับข้อที่แล้ว
+    let available = dataPool.filter(a => a.word !== lastCorrectWord);
+    if (available.length === 0) available = dataPool;
+    
+    let correctAnimal = available[Math.floor(Math.random() * available.length)];
+    currentWord = correctAnimal.word;
+    lastCorrectWord = currentWord;
+    
+    // เอาข้อที่ถูกออกไปก่อน เพื่อสุ่มตัวหลอกมาเพิ่ม
+    dataPool = dataPool.filter(a => a.word !== currentWord);
+    
+    let selectedAnimals = [correctAnimal];
+    for(let i=0; i<2; i++) {
         let randIndex = Math.floor(Math.random() * dataPool.length);
         selectedAnimals.push(dataPool[randIndex]);
         dataPool.splice(randIndex, 1); 
     }
 
-    let correctAnimal = selectedAnimals[0];
-    currentWord = correctAnimal.word;
-
-    selectedAnimals.sort(() => Math.random() - 0.5);
+    // สลับตำแหน่งคำตอบ (Fisher-Yates Shuffle)
+    for (let i = selectedAnimals.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selectedAnimals[i], selectedAnimals[j]] = [selectedAnimals[j], selectedAnimals[i]];
+    }
 
     const startX = (canvasElement.width - (BOX_SIZE * 3 + 40)) / 2; 
     const yPos = 300; 

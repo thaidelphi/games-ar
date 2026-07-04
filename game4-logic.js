@@ -60,20 +60,34 @@ function startCountdown() {
     }, 1000);
 }
 
+let lastCorrectWord = "";
+
 function generateQuestion() {
     let dataPool = [...FRUIT_DATA];
     
-    let selectedFruits = [];
-    for(let i=0; i<3; i++) {
+    // กรองคำตอบเก่าออกเพื่อไม่ให้ซ้ำกับข้อที่แล้ว
+    let available = dataPool.filter(a => a.word !== lastCorrectWord);
+    if (available.length === 0) available = dataPool;
+    
+    let correctFruit = available[Math.floor(Math.random() * available.length)];
+    currentWord = correctFruit.word;
+    lastCorrectWord = currentWord;
+    
+    // เอาข้อที่ถูกออกไปก่อน เพื่อสุ่มตัวหลอกมาเพิ่ม
+    dataPool = dataPool.filter(a => a.word !== currentWord);
+    
+    let selectedFruits = [correctFruit];
+    for(let i=0; i<2; i++) {
         let randIndex = Math.floor(Math.random() * dataPool.length);
         selectedFruits.push(dataPool[randIndex]);
         dataPool.splice(randIndex, 1); 
     }
 
-    let correctFruit = selectedFruits[0];
-    currentWord = correctFruit.word;
-
-    selectedFruits.sort(() => Math.random() - 0.5);
+    // สลับตำแหน่งคำตอบ (Fisher-Yates Shuffle)
+    for (let i = selectedFruits.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selectedFruits[i], selectedFruits[j]] = [selectedFruits[j], selectedFruits[i]];
+    }
 
     const startX = (canvasElement.width - (BOX_SIZE * 3 + 40)) / 2; 
     const yPos = 300; 
