@@ -127,6 +127,19 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
+const clapAudio = new Audio('https://www.myinstants.com/media/sounds/applause.mp3');
+const booAudio = new Audio('https://www.myinstants.com/media/sounds/boo.mp3');
+
+function playClapSound() {
+    clapAudio.currentTime = 0;
+    clapAudio.play().catch(e => console.log(e));
+}
+
+function playBooSound() {
+    booAudio.currentTime = 0;
+    booAudio.play().catch(e => console.log(e));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const startOverlay = document.getElementById('start-overlay');
     if (startOverlay) {
@@ -210,7 +223,8 @@ function punish() {
     let correctAns = answers.find(a => a.isCorrect);
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentWord} = ${correctAns.emoji}`;
     
-    // เสียงคำแปลไทย (เอา setTimeout ออกเพื่อแก้ปัญหาเบราว์เซอร์บล็อคเสียง)
+    // เล่นเสียงโห่และคำแปล
+    playBooSound();
     let correctData = ANIMAL_DATA.find(a => a.word === currentWord);
     if (correctData && correctData.thai) {
         speakWord(correctData.thai, 'th-TH');
@@ -230,7 +244,8 @@ function celebrate() {
     if (gameState === 'PUNISHED' || gameState === 'CELEBRATING') return;
     gameState = 'CELEBRATING';
     
-    // เสียงคำแปลไทย (เอา setTimeout ออก)
+    // เล่นเสียงปรบมือและคำแปล
+    playClapSound();
     let correctData = ANIMAL_DATA.find(a => a.word === currentWord);
     if (correctData && correctData.thai) {
         speakWord(correctData.thai, 'th-TH');
