@@ -169,6 +169,14 @@ function celebrate() {
     // เล่นเสียงปรบมือ
     playClapSound();
     
+    // เสียงคำแปลไทย
+    let correctData = FRUIT_DATA.find(a => a.word === currentWord);
+    if (correctData && correctData.thai) {
+        setTimeout(() => {
+            speakWord(correctData.thai, 'th-TH');
+        }, 1200); 
+    }
+    
     gameContainer.classList.add('success-active');
     
     score += 10;
