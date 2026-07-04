@@ -113,13 +113,14 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
+let currentUtterance = null;
 function speakWord(word) {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        let utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
+        currentUtterance = new SpeechSynthesisUtterance(word);
+        currentUtterance.lang = 'en-US';
+        currentUtterance.rate = 0.9;
+        window.speechSynthesis.speak(currentUtterance);
     }
 }
 
