@@ -25,8 +25,8 @@ let hoverState = { partId: null, progress: 0 };
 let lastSpokenPart = null;
 let cooldownTimer = null;
 
-const HOVER_THRESHOLD = 30; // จำนวนเฟรมที่ต้องชี้ค้างไว้
-const DISTANCE_THRESHOLD = 0.08; // ระยะห่างสำหรับจับการชน (normalized distance)
+const HOVER_THRESHOLD = 10; // ลดจำนวนเฟรมลงเพื่อให้จับได้ไวขึ้น (จาก 30 เหลือ 10)
+const DISTANCE_THRESHOLD = 0.12; // เพิ่มระยะห่างให้ตรวจจับง่ายขึ้นเล็กน้อย
 
 const startOverlay = document.getElementById('start-overlay');
 if (startOverlay) {
