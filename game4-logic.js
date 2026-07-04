@@ -61,10 +61,13 @@ const HOVER_DECREMENT = HOVER_INCREMENT * 2;
 function startCountdown() {
     gameState = 'COUNTDOWN';
     countdownValue = 3;
+    window.currentFingersCount = 0;
     
     if (countdownInterval) clearInterval(countdownInterval);
     
     countdownInterval = setInterval(() => {
+        if (window.currentFingersCount > 0) return; // รอมือลงก่อน
+        
         countdownValue--;
         if (countdownValue <= 0) {
             clearInterval(countdownInterval);
@@ -371,17 +374,49 @@ function onResults(results) {
             canvasCtx.restore();
         });
     } else if (gameState === 'COUNTDOWN') {
+        let fingersCount = 0;
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            const landmarks = results.multiHandLandmarks[0];
+            const thumbTip = landmarks[4];
+            const thumbIP = landmarks[3];
+            const pinkyMCP = landmarks[17];
+            if (Math.hypot(thumbTip.x - pinkyMCP.x, thumbTip.y - pinkyMCP.y) > Math.hypot(thumbIP.x - pinkyMCP.x, thumbIP.y - pinkyMCP.y)) fingersCount++;
+            const fingerTips = [8, 12, 16, 20];
+            const fingerPIPs = [6, 10, 14, 18];
+            for (let i = 0; i < fingerTips.length; i++) {
+                if (landmarks[fingerTips[i]].y < landmarks[fingerPIPs[i]].y) fingersCount++;
+            }
+            const fingerDisplay = document.getElementById('finger-display');
+            if (fingerDisplay) fingerDisplay.innerText = fingersCount;
+            drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00FF00', lineWidth: 3});
+            drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 1, radius: 2});
+        } else {
+            const fingerDisplay = document.getElementById('finger-display');
+            if (fingerDisplay) fingerDisplay.innerText = "0";
+        }
+        window.currentFingersCount = fingersCount;
+
         canvasCtx.save();
         canvasCtx.translate(canvasElement.width, 0);
         canvasCtx.scale(-1, 1);
-        canvasCtx.font = 'bold 150px Arial';
-        canvasCtx.fillStyle = '#e74c3c';
-        canvasCtx.strokeStyle = 'white';
-        canvasCtx.lineWidth = 10;
         canvasCtx.textAlign = 'center';
         canvasCtx.textBaseline = 'middle';
-        canvasCtx.strokeText(countdownValue, canvasElement.width / 2, canvasElement.height / 2);
-        canvasCtx.fillText(countdownValue, canvasElement.width / 2, canvasElement.height / 2);
+        
+        if (fingersCount > 0) {
+            canvasCtx.font = 'bold 50px Arial';
+            canvasCtx.fillStyle = '#f1c40f';
+            canvasCtx.strokeStyle = '#000000';
+            canvasCtx.lineWidth = 6;
+            canvasCtx.strokeText("⚠️ กรุณาเอามือลงก่อนเริ่มข้อใหม่", canvasElement.width / 2, canvasElement.height / 2);
+            canvasCtx.fillText("⚠️ กรุณาเอามือลงก่อนเริ่มข้อใหม่", canvasElement.width / 2, canvasElement.height / 2);
+        } else {
+            canvasCtx.font = 'bold 150px Arial';
+            canvasCtx.fillStyle = '#e74c3c';
+            canvasCtx.strokeStyle = 'white';
+            canvasCtx.lineWidth = 10;
+            canvasCtx.strokeText(countdownValue, canvasElement.width / 2, canvasElement.height / 2);
+            canvasCtx.fillText(countdownValue, canvasElement.width / 2, canvasElement.height / 2);
+        }
         canvasCtx.restore();
     }
 
