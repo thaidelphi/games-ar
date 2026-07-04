@@ -412,6 +412,25 @@ const camera = new Camera(videoElement, {
     height: 480
 });
 
+// เพิ่มระบบคลิกหน้าจอเพื่อตอบคำถาม
+canvasElement.addEventListener('click', (event) => {
+    if (gameState !== 'PLAYING') return;
+    
+    const rect = canvasElement.getBoundingClientRect();
+    const scaleX = canvasElement.width / rect.width;
+    const scaleY = canvasElement.height / rect.height;
+    
+    const clickX = (event.clientX - rect.left) * scaleX;
+    const clickY = (event.clientY - rect.top) * scaleY;
+    
+    answers.forEach(ans => {
+        if (clickX >= ans.x && clickX <= ans.x + ans.width &&
+            clickY >= ans.y && clickY <= ans.y + ans.height) {
+            ans.hoverProgress = 1; // บังคับให้แถบโหลดเต็มทันที
+        }
+    });
+});
+
 camera.start().catch(err => {
     console.error("Camera error:", err);
     loadingElement.innerHTML = "เปิดกล้องไม่สำเร็จ กรุณาเช็คการตั้งค่าบราวเซอร์";
