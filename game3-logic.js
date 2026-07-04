@@ -127,16 +127,13 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
-let currentAudio = new Audio();
-
 document.addEventListener('DOMContentLoaded', () => {
     const startOverlay = document.getElementById('start-overlay');
     if (startOverlay) {
         startOverlay.addEventListener('click', () => {
-            // Unlock audio by playing and immediately pausing
-            currentAudio.play().catch(() => {});
-            currentAudio.pause();
-            currentAudio.src = '';
+            if (typeof responsiveVoice !== 'undefined') {
+                responsiveVoice.speak("", "Thai Female");
+            }
             startOverlay.style.display = 'none';
         });
     }
@@ -150,27 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function speakWord(word, lang = 'en-US') {
-    let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
-    let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${ttsLang}&q=${encodeURIComponent(word)}`;
-    
-    currentAudio.pause();
-    currentAudio.src = url;
-    
-    currentAudio.play().catch(e => {
-        console.log("Google TTS failed, fallback to speechSynthesis", e);
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            let utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = lang;
-            
-            let voices = window.speechSynthesis.getVoices();
-            let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
-            if (voice) {
-                utterance.voice = voice;
-            }
-            window.speechSynthesis.speak(utterance);
-        }
-    });
+    if (typeof responsiveVoice !== 'undefined') {
+        let voiceName = lang === 'th-TH' ? 'Thai Female' : 'US English Female';
+        responsiveVoice.speak(word, voiceName, {rate: 0.9});
+    } else if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        let utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = lang;
+        window.speechSynthesis.speak(utterance);
+    }
 }
 
 function generateQuestion() {
