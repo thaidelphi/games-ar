@@ -91,6 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
             startOverlay.style.display = 'none';
         });
     }
+    
+    const testAudioBtn = document.getElementById('test-audio-btn');
+    if (testAudioBtn) {
+        testAudioBtn.addEventListener('click', () => {
+            speakWord('ทดสอบระบบเสียงภาษาไทย', 'th-TH');
+        });
+    }
 });
 
 function speakWord(word, lang = 'en-US') {
