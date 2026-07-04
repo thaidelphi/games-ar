@@ -127,28 +127,43 @@ function startCountdown() {
 
 let lastCorrectWord = "";
 
-let currentAudio = new Audio();
+let thaiVoice = null;
+let enVoice = null;
+
+function initVoices() {
+    if (!('speechSynthesis' in window)) return;
+    let voices = window.speechSynthesis.getVoices();
+    thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang === 'th_TH' || v.lang.includes('th'));
+    enVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en_US' || v.lang.includes('en'));
+}
+
+if ('speechSynthesis' in window) {
+    initVoices();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = initVoices;
+    }
+}
+
 function speakWord(word, lang = 'en-US') {
-    let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
-    let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${ttsLang}&q=${encodeURIComponent(word)}`;
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
     
-    currentAudio.pause();
-    currentAudio.src = url;
+    let utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = lang;
+    utterance.rate = 0.9;
     
-    currentAudio.play().catch(e => {
-        console.log("Google TTS failed, fallback to speechSynthesis", e);
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            let utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = lang;
-            let voices = window.speechSynthesis.getVoices();
-            let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
-            if (voice) {
-                utterance.voice = voice;
-            }
-            window.speechSynthesis.speak(utterance);
-        }
-    });
+    if (lang === 'th-TH' && thaiVoice) {
+        utterance.voice = thaiVoice;
+    } else if (lang === 'en-US' && enVoice) {
+        utterance.voice = enVoice;
+    } else {
+        // Fallback: try to find on the fly if not initialized
+        let voices = window.speechSynthesis.getVoices();
+        let voice = voices.find(v => v.lang.includes(lang) || v.lang.includes(lang.split('-')[0]));
+        if (voice) utterance.voice = voice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
 }
 
 function generateQuestion() {
@@ -200,9 +215,6 @@ function punish() {
     if (gameState === 'PUNISHED' || gameState === 'CELEBRATING') return;
     gameState = 'PUNISHED';
     
-    // เล่นเสียงโห่
-    playBooSound();
-    
     let correctAns = answers.find(a => a.isCorrect);
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentWord} = ${correctAns.emoji}`;
     
@@ -225,9 +237,6 @@ function punish() {
 function celebrate() {
     if (gameState === 'PUNISHED' || gameState === 'CELEBRATING') return;
     gameState = 'CELEBRATING';
-    
-    // เล่นเสียงปรบมือ
-    playClapSound();
     
     // เสียงคำแปลไทย (เอา setTimeout ออก)
     let correctData = ANIMAL_DATA.find(a => a.word === currentWord);
