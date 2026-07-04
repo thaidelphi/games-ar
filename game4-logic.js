@@ -154,12 +154,10 @@ function punish() {
     let correctAns = answers.find(a => a.isCorrect);
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentWord} = ${correctAns.emoji}`;
     
-    // เสียงคำแปลไทย
+    // เสียงคำแปลไทย (เอา setTimeout ออก)
     let correctData = FRUIT_DATA.find(a => a.word === currentWord);
     if (correctData && correctData.thai) {
-        setTimeout(() => {
-            speakWord(correctData.thai, 'th-TH');
-        }, 800); 
+        speakWord(correctData.thai, 'th-TH');
     }
     
     gameContainer.classList.add('shake-effect');
@@ -179,12 +177,10 @@ function celebrate() {
     // เล่นเสียงปรบมือ
     playClapSound();
     
-    // เสียงคำแปลไทย
+    // เสียงคำแปลไทย (เอา setTimeout ออก)
     let correctData = FRUIT_DATA.find(a => a.word === currentWord);
     if (correctData && correctData.thai) {
-        setTimeout(() => {
-            speakWord(correctData.thai, 'th-TH');
-        }, 1200); 
+        speakWord(correctData.thai, 'th-TH');
     }
     
     gameContainer.classList.add('success-active');
