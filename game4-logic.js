@@ -420,8 +420,12 @@ canvasElement.addEventListener('click', (event) => {
     const scaleX = canvasElement.width / rect.width;
     const scaleY = canvasElement.height / rect.height;
     
-    const clickX = (event.clientX - rect.left) * scaleX;
-    const clickY = (event.clientY - rect.top) * scaleY;
+    // คำนวณพิกัด clickX ปกติ
+    let clickX = (event.clientX - rect.left) * scaleX;
+    let clickY = (event.clientY - rect.top) * scaleY;
+    
+    // สลับซ้ายขวา (เพราะใน CSS มีการใช้ transform: scaleX(-1) เพื่อกระจกภาพ)
+    clickX = canvasElement.width - clickX;
     
     answers.forEach(ans => {
         if (clickX >= ans.x && clickX <= ans.x + ans.width &&
