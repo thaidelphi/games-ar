@@ -196,13 +196,13 @@ const holistic = new Holistic({locateFile: (file) => {
 }});
 
 holistic.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
+    modelComplexity: 0,
+    smoothLandmarks: false,
     enableSegmentation: false,
-    smoothSegmentation: true,
-    refineFaceLandmarks: true,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7
+    smoothSegmentation: false,
+    refineFaceLandmarks: false,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
 });
 
 holistic.onResults(onResults);
