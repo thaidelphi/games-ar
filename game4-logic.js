@@ -91,24 +91,24 @@ function playBooSound() {
     booAudio.play().catch(e => console.log(e));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const startOverlay = document.getElementById('start-overlay');
-    if (startOverlay) {
-        startOverlay.addEventListener('click', () => {
+const startOverlay = document.getElementById('start-overlay');
+if (startOverlay) {
+    startOverlay.addEventListener('click', () => {
+        try {
             if (typeof responsiveVoice !== 'undefined') {
-                responsiveVoice.speak("", "Thai Female");
+                responsiveVoice.speak(" ", "Thai Female");
             }
-            startOverlay.style.display = 'none';
-        });
-    }
-    
-    const testAudioBtn = document.getElementById('test-audio-btn');
-    if (testAudioBtn) {
-        testAudioBtn.addEventListener('click', () => {
-            speakWord('ทดสอบระบบเสียงภาษาไทย', 'th-TH');
-        });
-    }
-});
+        } catch(e) { console.error(e); }
+        startOverlay.style.display = 'none';
+    });
+}
+
+const testAudioBtn = document.getElementById('test-audio-btn');
+if (testAudioBtn) {
+    testAudioBtn.addEventListener('click', () => {
+        speakWord('ทดสอบระบบเสียงภาษาไทย', 'th-TH');
+    });
+}
 
 function speakWord(word, lang = 'en-US') {
     if (typeof responsiveVoice !== 'undefined') {
