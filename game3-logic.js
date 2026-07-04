@@ -88,6 +88,13 @@ let countdownInterval = null;
 let currentWord = "";
 let answers = []; // [{ emoji: '🐶', x, y, width, height, hoverTime: 0 }]
 const BOX_SIZE = 120;
+
+const clapAudio = new Audio('https://www.myinstants.com/media/sounds/applause.mp3');
+clapAudio.volume = 0.5;
+function playClapSound() {
+    clapAudio.currentTime = 0;
+    clapAudio.play().catch(e => console.log("Audio play failed:", e));
+}
 const FPS_ASSUMED = 30;
 const HOVER_REQUIRED = 200; // 0.2 วินาที
 const HOVER_INCREMENT = 1 / (FPS_ASSUMED * (HOVER_REQUIRED / 1000)); 
@@ -189,6 +196,9 @@ function punish() {
 function celebrate() {
     if (gameState === 'PUNISHED' || gameState === 'CELEBRATING') return;
     gameState = 'CELEBRATING';
+    
+    // เล่นเสียงปรบมือ
+    playClapSound();
     
     gameContainer.classList.add('success-active');
     
