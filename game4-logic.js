@@ -81,7 +81,7 @@ let lastCorrectWord = "";
 let currentAudio = null;
 function speakWord(word, lang = 'en-US') {
     let ttsLang = lang === 'th-TH' ? 'th' : 'en-US';
-    let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${ttsLang}&client=tw-ob&q=${encodeURIComponent(word)}`;
+    let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${ttsLang}&q=${encodeURIComponent(word)}`;
     
     if (currentAudio) {
         currentAudio.pause();
