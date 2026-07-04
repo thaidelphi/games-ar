@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Parts AR Explorer</title>
+    
+    <!-- MediaPipe Holistic -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
+    
+    <!-- ResponsiveVoice for robust TTS -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+    
+    <link rel="stylesheet" href="game7.css">
+</head>
+<body>
+    <!-- Start Overlay for Audio Unlock -->
+    <div id="start-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; cursor: pointer; backdrop-filter: blur(5px);">
+        <div style="background: linear-gradient(135deg, #1abc9c, #16a085); color: white; padding: 20px 50px; border-radius: 30px; font-size: 35px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.5); animation: pulse 1.5s infinite;">
+            👆 แตะที่นี่เพื่อเริ่มสำรวจ
+        </div>
+    </div>
+    
+    <div class="game-container" id="game-container">
+        <button id="fullscreen-btn" class="fs-btn" title="Toggle Fullscreen">🔲</button>
+        <button onclick="location.reload()" class="refresh-btn" title="Refresh Page">🔄</button>
+        <!-- UI Layer -->
+        <div id="ui-layer">
+            <div id="instructions">👉 ใช้นิ้วชี้ชี้ไปที่อวัยวะ (ตา, จมูก, ปาก, หู, ไหล่) ค้างไว้สักครู่!</div>
+        </div>
+        
+        <div class="video-wrapper">
+            <video class="input_video" playsinline></video>
+            <!-- Canvas สำหรับวาดเกม -->
+            <canvas class="output_canvas" width="640" height="480"></canvas>
+            
+            <!-- Popup คำศัพท์ -->
+            <div id="word-popup" class="word-popup">Eye (ตา)</div>
+        </div>
+        
+        <div id="loading">กำลังโหลด AI จับภาพร่างกาย... กรุณาเปิดกล้อง</div>
+    </div>
+
+    <script src="game7-logic.js"></script>
+    <script>
+        const fsBtn = document.getElementById('fullscreen-btn');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.log(err));
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
