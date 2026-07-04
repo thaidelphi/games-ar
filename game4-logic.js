@@ -58,6 +58,8 @@ function startCountdown() {
             gameState = 'PLAYING';
         }
     }, 1000);
+}
+
 let lastCorrectWord = "";
 
 function speakWord(word) {
