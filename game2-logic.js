@@ -24,6 +24,13 @@ function playClapSound() {
     clapAudio.currentTime = 0;
     clapAudio.play().catch(e => console.log("Audio play failed:", e));
 }
+
+const booAudio = new Audio('https://www.myinstants.com/media/sounds/boo.mp3');
+booAudio.volume = 0.5;
+function playBooSound() {
+    booAudio.currentTime = 0;
+    booAudio.play().catch(e => console.log("Audio play failed:", e));
+}
 const FPS_ASSUMED = 30;
 const HOVER_REQUIRED = 200; // 0.2 วินาที
 const HOVER_INCREMENT = 1 / (FPS_ASSUMED * (HOVER_REQUIRED / 1000)); 
@@ -99,6 +106,9 @@ function generateQuestion() {
 function punish() {
     if (gameState === 'PUNISHED' || gameState === 'CELEBRATING') return;
     gameState = 'PUNISHED';
+    
+    // เล่นเสียงโห่
+    playBooSound();
     
     let correctVal = answers.find(a => a.isCorrect).value;
     document.getElementById('correct-answer-display').innerText = `เฉลย: ${currentQuestion.replace('?', correctVal)}`;
